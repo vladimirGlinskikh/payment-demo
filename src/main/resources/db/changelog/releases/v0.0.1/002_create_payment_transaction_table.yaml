@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-payment-transaction
+      author: Vladimir Glinskikh
+      changes:
+        - createTable:
+            tableName: payment_transaction
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_transaction_status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: error_message
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: source_bank_account_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: destination_bank_account_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: payment_transaction
+            baseColumnNames: source_bank_account_id
+            referencedTableName: bank_account
+            referencedColumnNames: id
+            constraintName: fk_payment_transaction_source_bank_account
+        - addForeignKeyConstraint:
+            baseTableName: payment_transaction
+            baseColumnNames: destination_bank_account_id
+            referencedTableName: bank_account
+            referencedColumnNames: id
+            constraintName: fk_payment_transactions_destination_bank_account
